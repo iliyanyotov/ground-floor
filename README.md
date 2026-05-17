@@ -2,7 +2,7 @@
 
 Baseline dotfiles and configs for any TypeScript projects.
 
-Pairs with [house-rules](../house-rules). Conventions live there. The baseline lives here.
+Pairs with [house-rules](https://github.com/iliyanyotov/house-rules). Conventions live there. The baseline lives here.
 
 ## Why
 
