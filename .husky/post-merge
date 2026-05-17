@@ -1,10 +1,7 @@
 #!/usr/bin/env sh
 # Re-install when a merge or pull changes package.json or bun.lock.
 # ORIG_HEAD = pre-merge HEAD, HEAD = post-merge HEAD.
-changed=$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD)
-case "$changed" in
-  *package.json*|*bun.lock*)
-    echo "📦 Dependencies changed — running bun install..."
-    bun install
-    ;;
-esac
+if [ -n "$(git diff --name-only ORIG_HEAD HEAD -- package.json bun.lock)" ]; then
+  echo "📦 Dependencies changed — running bun install..."
+  bun install
+fi
