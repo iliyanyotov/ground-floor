@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# Re-install when a branch switch changes package.json or bun.lock.
+# Args: $1 = previous HEAD, $2 = new HEAD, $3 = 1 if branch checkout (0 if file).
+[ "$3" = "1" ] || exit 0
+
+changed=$(git diff-tree -r --name-only --no-commit-id "$1" "$2")
+case "$changed" in
+  *package.json*|*bun.lock*)
+    echo "📦 Dependencies changed — running bun install..."
+    bun install
+    ;;
+esac

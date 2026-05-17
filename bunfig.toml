@@ -1,0 +1,15 @@
+[install]
+# Lock to exact versions — no implicit ^ or ~ ranges.
+exact = true
+
+# Only install package versions published at least 14 days ago.
+# Reduces supply-chain risk from newly-published malicious releases.
+#minimumReleaseAge = 1209600 # seconds (14 days)
+
+# Trusted packages exempt from the age gate (project-specific).
+minimumReleaseAgeExcludes = []
+
+[install.cache]
+# Keep the cache local to the repo so CI caching is trivial and nothing
+# leaks into the developer's global Bun cache. Matches .gitignore.
+dir = ".bun-cache"

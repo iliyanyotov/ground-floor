@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "biomejs.biome",
+    "oven.bun-vscode",
+    "editorconfig.editorconfig",
+    "mikestead.dotenv"
+  ]
+}
