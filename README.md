@@ -1,6 +1,6 @@
 # ground-floor
 
-Baseline dotfiles and configs for any TypeScript projects.
+Baseline dotfiles and configs for any TypeScript project.
 
 Pairs with [house-rules](https://github.com/iliyanyotov/house-rules). Conventions live there. The baseline lives here.
 
