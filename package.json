@@ -2,7 +2,7 @@
   "name": "ground-floor",
   "version": "0.1.0",
   "private": false,
-  "description": "Baseline dotfiles and configs for any TypeScript projects.",
+  "description": "Baseline dotfiles and configs for any TypeScript project",
   "type": "module",
   "scripts": {
     "prepare": "husky",
