@@ -13,3 +13,12 @@ minimumReleaseAgeExcludes = []
 # Keep the cache local to the repo so CI caching is trivial and nothing
 # leaks into the developer's global Bun cache. Matches .gitignore.
 dir = ".bun-cache"
+
+[test]
+# Scope Bun's test runner to src/ so it never picks up specs from other tools
+# (e.g. Playwright e2e suites) once a real project grows them.
+root = "src"
+
+# Runs before any test module — the single place for global setup such as env
+# flags, custom matchers, or shared mocks. See src/test/preload.ts.
+preload = ["./src/test/preload.ts"]
