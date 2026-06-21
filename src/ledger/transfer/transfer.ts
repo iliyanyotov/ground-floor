@@ -7,7 +7,7 @@ class Transaction implements Disposable {
   readonly #undos: Array<() => void> = [];
   #committed = false;
 
-  run(action: () => void, undo: () => void): void {
+  stage(action: () => void, undo: () => void): void {
     action();
     this.#undos.push(undo);
   }
@@ -25,14 +25,18 @@ class Transaction implements Disposable {
 
 /** Move `amount` from one account to another, atomically. */
 export function transfer(from: Account, to: Account, amount: Money): void {
+  if (from.id === to.id) {
+    throw new Error('Cannot transfer to the same account');
+  }
+
   using tx = new Transaction();
 
-  tx.run(
+  tx.stage(
     () => from.withdraw(amount),
     () => from.deposit(amount)
   );
 
-  tx.run(
+  tx.stage(
     () => to.deposit(amount),
     () => to.withdraw(amount)
   );

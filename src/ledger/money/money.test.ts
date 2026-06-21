@@ -14,14 +14,41 @@ describe('Money', () => {
     );
   });
 
-  it('reports a negative balance', () => {
-    expect(Money.of(500, 'USD').minus(Money.of(800, 'USD')).isNegative()).toBe(
-      true
+  it('subtracts down to exactly zero', () => {
+    expect(Money.of(800, 'USD').minus(Money.of(800, 'USD')).format()).toBe(
+      '$0.00'
     );
   });
 
+  it('rejects a subtraction that would go below zero', () => {
+    expect(() => Money.of(500, 'USD').minus(Money.of(800, 'USD'))).toThrow(
+      'Amount cannot be negative'
+    );
+  });
+
+  it('rejects a negative amount at construction', () => {
+    expect(() => Money.of(-1, 'USD')).toThrow('Amount cannot be negative');
+  });
+
+  it('reports whether an amount is strictly positive', () => {
+    expect(Money.of(1, 'USD').isPositive()).toBe(true);
+    expect(Money.of(0, 'USD').isPositive()).toBe(false);
+  });
+
+  it('reports whether it covers another amount', () => {
+    expect(Money.of(1000, 'USD').covers(Money.of(800, 'USD'))).toBe(true);
+    expect(Money.of(1000, 'USD').covers(Money.of(1000, 'USD'))).toBe(true);
+    expect(Money.of(800, 'USD').covers(Money.of(1000, 'USD'))).toBe(false);
+  });
+
   it('rejects non-integer minor units', () => {
-    expect(() => Money.of(10.5, 'USD')).toThrow('must be an integer');
+    expect(() => Money.of(10.5, 'USD')).toThrow('must be a safe integer');
+  });
+
+  it('rejects minor units beyond the safe-integer range', () => {
+    expect(() => Money.of(Number.MAX_SAFE_INTEGER + 2, 'USD')).toThrow(
+      'must be a safe integer'
+    );
   });
 
   it('formats minor units as a currency amount', () => {
@@ -43,7 +70,13 @@ describe('Money', () => {
 
   it('throws when mixing currencies in arithmetic', () => {
     expect(() => Money.of(100, 'USD').plus(Money.of(100, 'EUR'))).toThrow(
-      'currency mismatch'
+      'Currency mismatch'
+    );
+  });
+
+  it('throws when comparing across currencies', () => {
+    expect(() => Money.of(100, 'USD').covers(Money.of(100, 'EUR'))).toThrow(
+      'Currency mismatch'
     );
   });
 });

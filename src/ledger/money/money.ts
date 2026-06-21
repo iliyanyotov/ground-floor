@@ -16,10 +16,14 @@ export class Money {
     this.currency = currency;
   }
 
-  // Build from integer minor units: Money.of(100, 'USD') is $1.00.
+  // Build from integer minor units: Money.of(100, 'USD') is $1.00
   static of(minor: number, currency: Currency): Money {
-    if (!Number.isInteger(minor)) {
-      throw new Error(`minor units must be an integer, got ${minor}`);
+    if (!Number.isSafeInteger(minor)) {
+      throw new Error(`Minor units must be a safe integer, got ${minor}`);
+    }
+
+    if (minor < 0) {
+      throw new Error(`Amount cannot be negative, got ${minor}`);
     }
 
     return new Money(minor, currency);
@@ -27,20 +31,25 @@ export class Money {
 
   plus(other: Money): Money {
     this.#assertSameCurrency(other);
-    return new Money(this.#minor + other.#minor, this.currency);
+    return Money.of(this.#minor + other.#minor, this.currency);
   }
 
   minus(other: Money): Money {
     this.#assertSameCurrency(other);
-    return new Money(this.#minor - other.#minor, this.currency);
+    return Money.of(this.#minor - other.#minor, this.currency);
   }
 
-  isNegative(): boolean {
-    return this.#minor < 0;
+  isPositive(): boolean {
+    return this.#minor > 0;
   }
 
-  format(locale = 'en-US'): string {
-    return new Intl.NumberFormat(locale, {
+  covers(other: Money): boolean {
+    this.#assertSameCurrency(other);
+    return this.#minor >= other.#minor;
+  }
+
+  format(): string {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: this.currency,
     }).format(this.#minor / 10 ** DECIMALS[this.currency]);
@@ -49,7 +58,7 @@ export class Money {
   #assertSameCurrency(other: Money): void {
     if (other.currency !== this.currency) {
       throw new Error(
-        `currency mismatch: ${this.currency} vs ${other.currency}`
+        `Currency mismatch: ${this.currency} vs ${other.currency}`
       );
     }
   }

@@ -1,5 +1,7 @@
-// Branded string: a plain string at runtime, but only Account can produce one,
-// so a raw string won't type-check as an AccountId.
-declare const brand: unique symbol;
+import type { Brand } from '@/ledger/brand';
 
-export type AccountId = string & { readonly [brand]: 'AccountId' };
+export type AccountId = Brand<string, 'AccountId'>;
+
+export const AccountId = {
+  mint: (): AccountId => `acct_${Bun.randomUUIDv7()}` as AccountId,
+};

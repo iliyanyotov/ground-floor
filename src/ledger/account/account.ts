@@ -1,5 +1,5 @@
 import { audit } from '@/ledger/account/audit';
-import type { AccountId } from '@/ledger/account/types';
+import { AccountId } from '@/ledger/account/types';
 import type { Money } from '@/ledger/money/money';
 
 export class Account {
@@ -12,7 +12,7 @@ export class Account {
   }
 
   static open(balance: Money): Account {
-    return new Account(`acct_${Bun.randomUUIDv7()}` as AccountId, balance);
+    return new Account(AccountId.mint(), balance);
   }
 
   get balance(): Money {
@@ -21,17 +21,26 @@ export class Account {
 
   @audit
   deposit(amount: Money): void {
+    Account.#assertMovable(amount);
     this.#balance = this.#balance.plus(amount);
   }
 
   @audit
   withdraw(amount: Money): void {
-    const next = this.#balance.minus(amount);
+    Account.#assertMovable(amount);
 
-    if (next.isNegative()) {
-      throw new Error(`insufficient funds in ${this.id}`);
+    // Ask before subtracting so an overdraft raises this domain error rather
+    // than minus()'s generic underflow.
+    if (!this.#balance.covers(amount)) {
+      throw new Error(`Insufficient funds in ${this.id}`);
     }
 
-    this.#balance = next;
+    this.#balance = this.#balance.minus(amount);
+  }
+
+  static #assertMovable(amount: Money): void {
+    if (!amount.isPositive()) {
+      throw new Error('Amount must be positive');
+    }
   }
 }

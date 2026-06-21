@@ -33,12 +33,22 @@ describe('transfer', () => {
     expect(bob.balance.format()).toBe('$30.00');
   });
 
+  it('rejects a transfer to the same account', () => {
+    const alice = Account.open(Money.of(10000, 'USD'));
+
+    expect(() => transfer(alice, alice, Money.of(3000, 'USD'))).toThrow(
+      'Cannot transfer to the same account'
+    );
+
+    expect(alice.balance.format()).toBe('$100.00');
+  });
+
   it('rolls back when the payer has insufficient funds', () => {
     const alice = Account.open(Money.of(5000, 'USD'));
     const bob = Account.open(Money.of(0, 'USD'));
 
     expect(() => transfer(alice, bob, Money.of(8000, 'USD'))).toThrow(
-      'insufficient funds'
+      'Insufficient funds'
     );
 
     // The withdrawal threw before mutating, so neither side moved.
@@ -54,7 +64,7 @@ describe('transfer', () => {
     // account) throws on currency mismatch. The using-disposer replays the
     // recorded undo, so alice's debit is reversed.
     expect(() => transfer(alice, hans, Money.of(3000, 'USD'))).toThrow(
-      'currency mismatch'
+      'Currency mismatch'
     );
 
     expect(alice.balance.format()).toBe('$100.00');
