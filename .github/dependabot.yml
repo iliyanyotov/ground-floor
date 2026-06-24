@@ -1,0 +1,34 @@
+# https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference
+version: 2
+updates:
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: monthly
+    # Keep in sync with bunfig.toml's minimumReleaseAge (14 days).
+    cooldown:
+      default-days: 14
+    # Collapse all dependency updates into one PR per run instead of one PR
+    # per package — less review churn, and CI runs once for the whole group.
+    groups:
+      dependencies:
+        patterns:
+          - '*'
+    commit-message:
+      prefix: chore
+      include: scope
+
+  # GitHub Actions pinned by SHA in workflows go stale silently; bump them too.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    cooldown:
+      default-days: 14
+    groups:
+      github-actions:
+        patterns:
+          - '*'
+    commit-message:
+      prefix: ci
+      include: scope
