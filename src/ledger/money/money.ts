@@ -1,12 +1,5 @@
 import type { Currency } from '@/ledger/money/types';
 
-// Minor-unit decimal places per currency (USD cents → 2, yen → 0).
-const DECIMALS: Record<Currency, number> = {
-  USD: 2,
-  EUR: 2,
-  JPY: 0,
-};
-
 export class Money {
   readonly #minor: number;
   readonly currency: Currency;
@@ -49,10 +42,15 @@ export class Money {
   }
 
   format(): string {
-    return new Intl.NumberFormat('en-US', {
+    const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: this.currency,
-    }).format(this.#minor / 10 ** DECIMALS[this.currency]);
+    });
+
+    // Derive the minor→major divisor from the formatter's own fraction digits
+    // (ISO 4217 minor units) rather than maintaining a second currency table.
+    const { maximumFractionDigits = 0 } = formatter.resolvedOptions();
+    return formatter.format(this.#minor / 10 ** maximumFractionDigits);
   }
 
   #assertSameCurrency(other: Money): void {

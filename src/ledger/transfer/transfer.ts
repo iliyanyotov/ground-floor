@@ -36,6 +36,8 @@ export function transfer(from: Account, to: Account, amount: Money): void {
     () => from.deposit(amount)
   );
 
+  // No up-front currency check by design: a cross-currency `to.deposit` throws
+  // here and the disposer unwinds leg 1, exercising rollback over early-guarding.
   tx.stage(
     () => to.deposit(amount),
     () => to.withdraw(amount)
