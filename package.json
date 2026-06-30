@@ -6,6 +6,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "preinstall": "bun scripts/check-bun-version.ts",
     "prepare": "husky",
     "format": "biome format --write .",
     "lint": "biome lint .",
