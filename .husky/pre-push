@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Mirror the CI gate locally so a push can't be red in CI but green here.
+# pre-commit only lints staged files; this runs the whole-repo checks.
+bun run check && bun run type-check && bun test
