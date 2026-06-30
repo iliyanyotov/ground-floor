@@ -13,6 +13,7 @@
     "check": "biome check .",
     "type-check": "tsc --noEmit",
     "test": "bun test",
+    "dev": "bun src/index.ts",
     "release": "commit-and-tag-version"
   },
   "devDependencies": {
