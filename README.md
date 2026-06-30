@@ -10,9 +10,9 @@ Agentic tools scaffold projects in seconds. They don't pick the small, opinionat
 
 ## Use it
 
-Tooling moves fast — runtimes, linters, and conventions all shift under you. This isn't a framework to adopt wholesale; it's a snapshot of choices that work well together right now. Take whatever makes sense for your project and leave the rest.
+This isn't a framework to adopt wholesale — it's a snapshot of choices that work well together right now. Tooling moves fast, so take what makes sense for your project and leave the rest.
 
-Lift a single config, copy the lot into a new repo, or just read it for the reasoning and decide for yourself. When something here stops being the best option, change it — and if it's worth keeping, fold it back in so the baseline keeps moving with the ecosystem.
+Lift a single config, copy the lot into a new repo, or just read it for the reasoning. When something here stops being the best option, change it — and if the change is worth keeping, fold it back in.
 
 ## Stack
 
@@ -29,4 +29,4 @@ Lift a single config, copy the lot into a new repo, or just read it for the reas
 - **Guardrails on every commit** — git hooks check staged files, enforce Conventional Commits, and keep the working tree in sync after merges and checkouts.
 - **Conventional Commits to automated releases** — commit messages drive changelog generation and semantic versioning.
 - **CI that mirrors local checks** — pull requests and pushes to `main` run the same format/lint, type-check, and tests you run locally.
-- **Example code** — everything under `src/` is pseudo-code. The little money-ledger domain exists only to give the tooling something real to chew on: code for the formatter and linter, types for `tsc` to verify, behavior for `bun test` to cover. It models nothing production-ready; delete it when you adopt the baseline.
+- **Example code** — everything under `src/` is throwaway demo code. The little money-ledger domain exists only to give the tooling something real to chew on: code to format and lint, types for `tsc` to verify, behavior for `bun test` to cover. Delete it when you adopt the baseline.

@@ -5,12 +5,15 @@ export interface Auditable {
   readonly id: string;
 }
 
+// Forensic log: also fires for the compensating mutations a rollback replays,
+// so a failed transfer leaves a withdraw + reversing deposit in the trail. By
+// design — it records object mutations, not which transactions committed.
 export function audit<This extends Auditable>(
   method: (this: This, amount: Money) => void,
   context: ClassMethodDecoratorContext<
     This,
     (this: This, amount: Money) => void
-  >
+  >,
 ) {
   const operation = String(context.name);
 
