@@ -29,6 +29,15 @@ export class Money {
 
   minus(other: Money): Money {
     this.#assertSameCurrency(other);
+
+    // Describe the subtraction the caller asked for, rather than letting
+    // Money.of's construction invariant ("cannot be negative") leak through.
+    if (other.#minor > this.#minor) {
+      throw new Error(
+        `Cannot subtract ${other.format()} from ${this.format()}: result would be negative`,
+      );
+    }
+
     return Money.of(this.#minor - other.#minor, this.currency);
   }
 
@@ -56,7 +65,7 @@ export class Money {
   #assertSameCurrency(other: Money): void {
     if (other.currency !== this.currency) {
       throw new Error(
-        `Currency mismatch: ${this.currency} vs ${other.currency}`
+        `Currency mismatch: ${this.currency} vs ${other.currency}`,
       );
     }
   }
