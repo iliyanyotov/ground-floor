@@ -27,7 +27,7 @@ describe('Account', () => {
 
   it('each opened account gets a distinct id', () => {
     expect(Account.open(Money.of(0, 'USD')).id).not.toBe(
-      Account.open(Money.of(0, 'USD')).id
+      Account.open(Money.of(0, 'USD')).id,
     );
   });
 
@@ -46,7 +46,7 @@ describe('Account', () => {
   it('withdraw beyond the balance throws and leaves it unchanged', () => {
     const account = Account.open(Money.of(1000, 'USD'));
     expect(() => account.withdraw(Money.of(1500, 'USD'))).toThrow(
-      'Insufficient funds'
+      'Insufficient funds',
     );
     expect(account.balance.format()).toBe('$10.00');
   });
@@ -54,7 +54,7 @@ describe('Account', () => {
   it('rejects a zero-amount deposit and leaves the balance unchanged', () => {
     const account = Account.open(Money.of(1000, 'USD'));
     expect(() => account.deposit(Money.of(0, 'USD'))).toThrow(
-      'Amount must be positive'
+      'Amount must be positive',
     );
     expect(account.balance.format()).toBe('$10.00');
   });
@@ -62,7 +62,7 @@ describe('Account', () => {
   it('rejects a zero-amount withdraw and leaves the balance unchanged', () => {
     const account = Account.open(Money.of(1000, 'USD'));
     expect(() => account.withdraw(Money.of(0, 'USD'))).toThrow(
-      'Amount must be positive'
+      'Amount must be positive',
     );
     expect(account.balance.format()).toBe('$10.00');
   });

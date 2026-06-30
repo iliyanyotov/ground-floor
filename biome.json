@@ -16,7 +16,7 @@
       "quoteStyle": "single",
       "jsxQuoteStyle": "single",
       "semicolons": "always",
-      "trailingCommas": "es5"
+      "trailingCommas": "all"
     }
   },
   "linter": {
