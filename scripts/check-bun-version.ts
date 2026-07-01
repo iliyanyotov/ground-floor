@@ -1,13 +1,16 @@
-import { existsSync, readFileSync } from 'node:fs';
+const versionFile = Bun.file('.bun-version');
 
-if (existsSync('.bun-version')) {
-  const required = readFileSync('.bun-version', 'utf8').trim();
+if (await versionFile.exists()) {
+  const requiredVersion = (await versionFile.text()).trim();
 
-  if (Bun.semver.order(Bun.version, required) < 0) {
+  if (Bun.semver.order(Bun.version, requiredVersion) < 0) {
     console.error(
-      `Bun ${Bun.version} is older than required ${required} (.bun-version). Run: bun upgrade`,
+      `Bun ${Bun.version} is older than required ${requiredVersion} (.bun-version). Run: bun upgrade`,
     );
 
     process.exit(1);
   }
 }
+
+// Makes this a module so top-level `await` is allowed.
+export {};
