@@ -51,7 +51,7 @@ describe('transfer', () => {
       'Insufficient funds',
     );
 
-    // The withdrawal threw before mutating, so neither side moved.
+    // The debit threw before mutating, so neither side moved.
     expect(alice.balance.format()).toBe('$50.00');
     expect(bob.balance.format()).toBe('$0.00');
   });
@@ -60,7 +60,7 @@ describe('transfer', () => {
     const alice = Account.open(Money.of(10000, 'USD'));
     const hans = Account.open(Money.of(0, 'EUR'));
 
-    // Leg 1 (alice withdraws USD) succeeds; leg 2 (deposit USD into a EUR
+    // Leg 1 (alice is debited USD) succeeds; leg 2 (credit USD into a EUR
     // account) throws on currency mismatch. The using-disposer replays the
     // recorded undo, so alice's debit is reversed.
     expect(() => transfer(alice, hans, Money.of(3000, 'USD'))).toThrow(

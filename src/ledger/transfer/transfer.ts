@@ -32,15 +32,15 @@ export function transfer(from: Account, to: Account, amount: Money): void {
   using tx = new Transaction();
 
   tx.stage(
-    () => from.withdraw(amount),
-    () => from.deposit(amount),
+    () => from.debit(amount),
+    () => from.credit(amount),
   );
 
-  // No up-front currency check by design: a cross-currency `to.deposit` throws
+  // No up-front currency check by design: a cross-currency `to.credit` throws
   // here and the disposer unwinds leg 1, exercising rollback over early-guarding.
   tx.stage(
-    () => to.deposit(amount),
-    () => to.withdraw(amount),
+    () => to.credit(amount),
+    () => to.debit(amount),
   );
 
   tx.commit();

@@ -20,13 +20,13 @@ export class Account {
   }
 
   @audit
-  deposit(amount: Money): void {
+  credit(amount: Money): void {
     Account.#assertMovable(amount);
     this.#balance = this.#balance.plus(amount);
   }
 
   @audit
-  withdraw(amount: Money): void {
+  debit(amount: Money): void {
     Account.#assertMovable(amount);
 
     // Ask before subtracting so an overdraft raises this domain error rather
