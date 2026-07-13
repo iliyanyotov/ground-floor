@@ -11,21 +11,23 @@ Practical consequence: most meaningful work here is editing config files (`biome
 Bun is the runtime, package manager, and test runner. There is no Node/npm/pnpm path.
 
 ```bash
-bun run check                   # lint + format check (no writes) — what CI runs
+bun run lint                    # lint + format check (no writes)
+bun run lint:ci                 # same, with CI reporters — what CI runs
 bun run lint:fix                # autofix lint + format
+bun run format                  # biome format --write; formatting only, no lint
 bun run type-check              # tsc --noEmit; emits nothing, type-only
 bun test src/ledger/money       # run a single dir/file's tests (omit path for all)
 bun run dev                     # run the demo entrypoint (src/index.ts)
 bun run release                 # commit-and-tag-version: changelog + semver bump
 ```
 
-CI (`.github/workflows/ci.yml`) runs exactly `check` → `type-check` → `bun test` on PRs and pushes to `main`. The `pre-push` hook runs the same three locally, so a push that's green here is green in CI. Reproduce CI by hand with those three.
+CI (`.github/workflows/ci.yml`) runs exactly `lint:ci` → `type-check` → `bun test` on PRs and pushes to `main`. The `pre-push` hook runs the same three locally, so a push that's green here is green in CI. Reproduce CI by hand with those three.
 
 ## Conventions enforced by tooling
 
 - **Commits must follow Conventional Commits**: `commit-msg` hook runs commitlint; non-conforming messages are rejected. Commit *types* drive the changelog and version bump (see `.versionrc.json` for which types are user-visible).
 - **`pre-commit` runs `lint-staged` then `type-check`**: staged JS/TS/JSON/CSS get `biome check --fix`, and the whole project is type-checked. A commit can fail on a type error in an unstaged file.
-- **`pre-push` runs the full CI gate** (`check` → `type-check` → `bun test`): `pre-commit` only lints *staged* files, so this is what catches whole-repo lint and untested behavior before they reach CI.
+- **`pre-push` runs the full CI gate** (`lint:ci` → `type-check` → `bun test`): `pre-commit` only lints *staged* files, so this is what catches whole-repo lint and untested behavior before they reach CI.
 - **`post-checkout` / `post-merge` auto-run `bun install`** when a branch switch, merge, or pull changes `package.json` or `bun.lock`.
 - **Dependencies pin to exact versions** (`bunfig.toml` `exact = true`): never introduce `^`/`~` ranges.
 - **New releases are blocked for 14 days** (`minimumReleaseAge`) as a supply-chain defense. Adding a just-published package will fail to install; to exempt one, add it to `minimumReleaseAgeExcludes` in `bunfig.toml`.

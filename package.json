@@ -6,15 +6,15 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "dev": "bun src/index.ts",
+    "lint": "biome check .",
+    "lint:fix": "biome check --fix .",
+    "lint:ci": "biome ci .",
     "preinstall": "bun scripts/check-bun-version.ts",
     "prepare": "husky",
     "format": "biome format --write .",
-    "lint": "biome lint .",
-    "lint:fix": "biome check --fix .",
-    "check": "biome check .",
     "type-check": "tsc --noEmit",
     "test": "bun test",
-    "dev": "bun src/index.ts",
     "release": "commit-and-tag-version"
   },
   "devDependencies": {
