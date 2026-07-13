@@ -4,6 +4,6 @@
 [ "$3" = "1" ] || exit 0
 
 if [ -n "$(git diff --name-only "$1" "$2" -- package.json bun.lock)" ]; then
-  echo "📦 Dependencies changed — running bun install..."
+  echo "Dependencies changed — running bun install..."
   bun install
 fi
