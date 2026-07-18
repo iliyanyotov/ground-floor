@@ -30,7 +30,7 @@ export class Account {
     Account.#assertMovable(amount);
 
     // Ask before subtracting so an overdraft raises this domain error rather
-    // than minus()'s generic underflow.
+    // than minus()'s generic underflow
     if (!this.#balance.covers(amount)) {
       throw new Error(`Insufficient funds in ${this.id}`);
     }

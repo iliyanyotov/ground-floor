@@ -12,7 +12,7 @@ import { Money } from '@/ledger/money/money';
 import { transfer } from '@/ledger/transfer/transfer';
 
 describe('transfer', () => {
-  // Silence the audit output the account operations produce.
+  // Silence the audit output the account operations produce
   let log: Mock<typeof console.log>;
 
   beforeEach(() => {
@@ -51,7 +51,7 @@ describe('transfer', () => {
       'Insufficient funds',
     );
 
-    // The debit threw before mutating, so neither side moved.
+    // The debit threw before mutating, so neither side moved
     expect(alice.balance.format()).toBe('$50.00');
     expect(bob.balance.format()).toBe('$0.00');
   });
@@ -61,8 +61,8 @@ describe('transfer', () => {
     const hans = Account.open(Money.of(0, 'EUR'));
 
     // Leg 1 (alice is debited USD) succeeds; leg 2 (credit USD into a EUR
-    // account) throws on currency mismatch. The using-disposer replays the
-    // recorded undo, so alice's debit is reversed.
+    // account) throws on currency mismatch; the using-disposer replays the
+    // recorded undo, so alice's debit is reversed
     expect(() => transfer(alice, hans, Money.of(3000, 'USD'))).toThrow(
       'Currency mismatch',
     );

@@ -1,13 +1,13 @@
 import type { Money } from '@/ledger/money/money';
 
-// Structural shape the decorator needs from `this` (avoids importing Account).
+// Structural shape the decorator needs from `this` (avoids importing Account)
 export interface Auditable {
   readonly id: string;
 }
 
 // Forensic log: also fires for the compensating mutations a rollback replays,
-// so a failed transfer leaves a debit + reversing credit in the trail. By
-// design — it records object mutations, not which transactions committed.
+// so a failed transfer leaves a debit + reversing credit in the trail; by
+// design it records object mutations, not which transactions committed
 export function audit<This extends Auditable>(
   method: (this: This, amount: Money) => void,
   context: ClassMethodDecoratorContext<

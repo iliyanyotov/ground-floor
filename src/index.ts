@@ -7,13 +7,13 @@ const bob = Account.open(Money.of(0, 'USD'));
 const hans = Account.open(Money.of(0, 'EUR'));
 
 // A transfer that settles
-console.log('Transfer $30.00  alice → bob');
+console.log('Transfer $30.00  alice to bob');
 transfer(alice, bob, Money.of(3000, 'USD'));
 console.log('Committed\n');
 
 // Paying USD into a EUR account fails on the second leg, so the disposer
-// rolls the whole thing back — alice is made whole.
-console.log('Transfer $30.00  alice → hans');
+// rolls the whole thing back; alice is made whole
+console.log('Transfer $30.00  alice to hans');
 try {
   transfer(alice, hans, Money.of(3000, 'USD'));
 } catch (error) {

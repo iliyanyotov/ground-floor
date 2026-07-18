@@ -1,24 +1,24 @@
 [install]
-# Lock to exact versions — no implicit ^ or ~ ranges.
+# Lock to exact versions; no implicit ^ or ~ ranges
 exact = true
 
-# Only install package versions published at least 14 days ago.
-# Reduces supply-chain risk from newly-published malicious releases.
+# Only install package versions published at least 14 days ago;
+# reduces supply-chain risk from newly-published malicious releases
 minimumReleaseAge = 1209600 # seconds (14 days)
 
-# Trusted packages exempt from the age gate (project-specific).
+# Trusted packages exempt from the age gate (project-specific)
 minimumReleaseAgeExcludes = []
 
 [install.cache]
 # Keep the cache local to the repo so CI caching is trivial and nothing
-# leaks into the developer's global Bun cache. Matches .gitignore.
+# leaks into the developer's global Bun cache; matches .gitignore
 dir = ".bun-cache"
 
 [test]
 # Scope Bun's test runner to src/ so it never picks up specs from other tools
-# (e.g. Playwright e2e suites) once a real project grows them.
+# (e.g. Playwright e2e suites) once a real project grows them
 root = "src"
 
-# Runs before any test module — the single place for global setup such as env
-# flags, custom matchers, or shared mocks. See src/test/preload.ts.
+# Runs before any test module; the single place for global setup such as env
+# flags, custom matchers, or shared mocks; see src/test/preload.ts
 preload = ["./src/test/preload.ts"]

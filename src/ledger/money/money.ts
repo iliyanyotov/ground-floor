@@ -31,7 +31,7 @@ export class Money {
     this.#assertSameCurrency(other);
 
     // Describe the subtraction the caller asked for, rather than letting
-    // Money.of's construction invariant ("cannot be negative") leak through.
+    // Money.of's construction invariant ("cannot be negative") leak through
     if (other.#minor > this.#minor) {
       throw new Error(
         `Cannot subtract ${other.format()} from ${this.format()}: result would be negative`,
@@ -56,8 +56,8 @@ export class Money {
       currency: this.currency,
     });
 
-    // Derive the minor→major divisor from the formatter's own fraction digits
-    // (ISO 4217 minor units) rather than maintaining a second currency table.
+    // Derive the minor-to-major divisor from the formatter's own fraction digits
+    // (ISO 4217 minor units) rather than maintaining a second currency table
     const { maximumFractionDigits = 0 } = formatter.resolvedOptions();
     return formatter.format(this.#minor / 10 ** maximumFractionDigits);
   }
