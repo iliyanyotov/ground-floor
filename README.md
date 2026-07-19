@@ -26,7 +26,7 @@ Lift a single config, copy the lot into a new repo, or just read it for the reas
 
 - **Strict, consistent formatting and linting**: one tool formats and lints, wired in as the editor default so it runs the same way locally and in CI.
 - **Reproducible, safer installs**: dependencies pin to exact versions, refuse releases younger than 14 days as supply-chain defense, and cache inside the repo so CI caching is trivial.
-- **Guardrails on every commit**: git hooks check staged files, enforce Conventional Commits, and keep the working tree in sync after merges and checkouts.
+- **Guardrails on every commit**: git hooks check staged files, enforce Conventional Commits, and reinstall dependencies after branch switches, merges, and pulls.
 - **Conventional Commits to automated releases**: commit messages drive changelog generation and semantic versioning.
 - **CI that mirrors local checks**: pull requests and pushes to `main` run the same lint, type-check, and tests you run locally.
 - **Example code**: everything under `src/` is throwaway demo code. The little money-ledger domain exists only to give the tooling something real to chew on: code to format and lint, types for `tsc` to verify, behavior for `bun test` to cover. Delete it when you adopt the baseline.
