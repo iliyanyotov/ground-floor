@@ -12,5 +12,5 @@ if (await versionFile.exists()) {
   }
 }
 
-// Makes this a module so top-level `await` is allowed.
+// Makes this a module so top-level `await` is allowed
 export {};
