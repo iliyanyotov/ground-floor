@@ -1,3 +1,7 @@
+[run]
+# Ignore `#!/usr/bin/env node` shebangs so no Node install is needed
+bun = true
+
 [install]
 # Lock to exact versions; no implicit ^ or ~ ranges
 exact = true
