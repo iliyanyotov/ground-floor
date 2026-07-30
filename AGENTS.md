@@ -31,6 +31,7 @@ CI (`.github/workflows/ci.yml`) runs `lint:ci`, then `type-check`, then `bun tes
 - **`pre-commit` runs `lint-staged` then `type-check`**: staged JS/TS/JSON get `biome check --fix`, and the whole project is type-checked (so a commit can fail on a type error in an unstaged file). Both must succeed.
 - **`pre-push` runs the full code gate**: because `pre-commit` only lints *staged* files, this is what catches whole-repo lint and untested behavior before they reach CI.
 - **`post-checkout` / `post-merge` auto-run `bun install`** when a branch switch, merge, or pull changes `package.json` or `bun.lock`.
+- **The toolchain runs on Bun, never Node** (`bunfig.toml` `[run] bun = true`): dependency binaries ship `#!/usr/bin/env node` shebangs (commitlint, lint-staged, commit-and-tag-version); this ignores them so the hooks need no Node install. Removing it reintroduces a Node dependency silently.
 - **Dependencies pin to exact versions** (`bunfig.toml` `exact = true`): never introduce `^`/`~` ranges.
 - **New releases are blocked for 14 days** (`minimumReleaseAge`) as a supply-chain defense, so a just-published package fails to install. Exempt one via `minimumReleaseAgeExcludes` in `bunfig.toml`.
 - **The Bun cache is local to the repo** (`.bun-cache`, gitignored) so CI caching is trivial. Don't repoint it at the global cache.
