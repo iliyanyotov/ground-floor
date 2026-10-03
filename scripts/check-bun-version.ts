@@ -11,6 +11,3 @@ if (await versionFile.exists()) {
     process.exit(1);
   }
 }
-
-// Makes this a module so top-level `await` is allowed
-export {};

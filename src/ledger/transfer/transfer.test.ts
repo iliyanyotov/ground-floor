@@ -43,7 +43,7 @@ describe('transfer', () => {
     expect(alice.balance.format()).toBe('$100.00');
   });
 
-  it('rolls back when the payer has insufficient funds', () => {
+  it('leaves both balances untouched when the payer has insufficient funds', () => {
     const alice = Account.open(Money.of(5000, 'USD'));
     const bob = Account.open(Money.of(0, 'USD'));
 
@@ -69,5 +69,11 @@ describe('transfer', () => {
 
     expect(alice.balance.format()).toBe('$100.00');
     expect(hans.balance.format()).toBe('€0.00');
+
+    // The forensic trail keeps both the debit and its reversing credit
+    expect(log.mock.calls).toEqual([
+      [`${alice.id} debit $30.00`],
+      [`${alice.id} credit $30.00`],
+    ]);
   });
 });

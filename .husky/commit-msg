@@ -1,2 +1,4 @@
 #!/usr/bin/env sh
-bunx --no-install commitlint --edit "$1"
+set -eu
+
+bunx --bun --no-install commitlint --edit "$1"
