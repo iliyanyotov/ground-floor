@@ -2,9 +2,9 @@
 
 ## What this repo is
 
-`ground-floor` is a **baseline of dotfiles and configs for any TypeScript project**, not an application. The configuration *is* the product. Everything under `src/` is deliberately disposable demo code (a money-ledger domain) that exists only to give the toolchain something real to act on: formatter input, types for `tsc`, behavior for `bun test`. When adopting the baseline, that code gets deleted.
+`ground-floor` is a **baseline of dotfiles and configs for any TypeScript project**, not an application. The configuration _is_ the product. Everything under `src/` is deliberately disposable demo code (a money-ledger domain) that exists only to give the toolchain something real to act on: formatter input, types for `tsc`, behavior for `bun test`. When adopting the baseline, that code gets deleted.
 
-So most meaningful work here is editing config files (`biome.json`, `bunfig.toml`, `tsconfig.json`, `.husky/*`, `.github/workflows/ci.yml`), and the bar for those changes is *justify the choice*. This repo pairs with the [house-rules](https://github.com/iliyanyotov/house-rules) conventions repo, so decisions should be opinionated and explained, usually in a comment.
+So most meaningful work here is editing config files (`biome.json`, `bunfig.toml`, `tsconfig.json`, `.husky/*`, `.github/workflows/ci.yml`), and the bar for those changes is _justify the choice_. This repo pairs with the [house-rules](https://github.com/iliyanyotov/house-rules) conventions repo, so decisions should be opinionated and explained, usually in a comment.
 
 ## Commands
 
@@ -26,10 +26,10 @@ CI (`.github/workflows/ci.yml`) runs `lint:ci`, then `type-check`, then `bun tes
 
 ## Conventions enforced by tooling
 
-- **Commits must follow Conventional Commits**: `commit-msg` hook runs commitlint; non-conforming messages are rejected. Commit *types* drive the changelog and version bump (see `.versionrc.json` for which types are user-visible).
+- **Commits must follow Conventional Commits**: `commit-msg` hook runs commitlint; non-conforming messages are rejected. Commit _types_ drive the changelog and version bump (see `.versionrc.json` for which types are user-visible).
 - **Biome lint domains are limited to the framework-agnostic ones** (`biome.json` `linter.domains`): `types` (type-inference rules) and `test` are on because they apply to any TS project, back-end or front-end. `types` is set to `recommended`, which only enables rules that are both recommended for the domain and out of `nursery`; its headline rule, `noFloatingPromises`, is still in `nursery`, so it isn't active yet and turns on without a config change once it graduates (`biome rage --linter` lists what is actually enabled). Framework domains (`react`, `next`, `solid`, `vue`) are deliberately left unset - Biome auto-enables them downstream when an app installs the framework, so pinning one here would only mislint the other kind of app. Enable type-aware rules through the `types` domain, not by pinning the `nursery` rule name (nursery names disappear when a rule graduates).
 - **`pre-commit` runs `lint-staged` then `type-check`**: staged JS/TS/JSON get `biome check --fix`, and the whole project is type-checked (so a commit can fail on a type error in an unstaged file). Both must succeed.
-- **`pre-push` runs the full code gate**: because `pre-commit` only lints *staged* files, this is what catches whole-repo lint and failing tests before they reach CI.
+- **`pre-push` runs the full code gate**: because `pre-commit` only lints _staged_ files, this is what catches whole-repo lint and failing tests before they reach CI.
 - **`post-checkout` / `post-merge` auto-run `bun install --frozen-lockfile`** when a branch switch, merge, or pull changes `package.json` or `bun.lock`; frozen, so a mismatched lockfile fails loudly instead of being silently rewritten.
 - **The toolchain runs on Bun, never Node** (`bunfig.toml` `[run] bun = true`): dependency binaries ship `#!/usr/bin/env node` shebangs (commitlint, lint-staged, commit-and-tag-version); this ignores them so the hooks need no Node install. Removing it reintroduces a Node dependency silently.
 - **Dependencies pin to exact versions** (`bunfig.toml` `exact = true`): never introduce `^`/`~` ranges.
