@@ -12,7 +12,7 @@ Bun is the runtime, package manager, and test runner. There is no Node/npm/pnpm 
 
 ```bash
 bun run lint                    # lint + format check (no writes)
-bun run lint:ci                 # same, with CI reporters - what CI runs
+bun run lint:ci                 # same, CI reporters, warnings fail - what CI runs
 bun run lint:fix                # autofix lint + format
 bun run format                  # biome format --write; formatting only, no lint
 bun run type-check              # tsc --noEmit; emits nothing, type-only
