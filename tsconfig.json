@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ES2025",
     "module": "Preserve",
     "moduleResolution": "Bundler",
     "moduleDetection": "force",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "lib": ["ES2022", "ESNext.Disposable"],
+    "lib": ["ES2025", "ESNext.Disposable"],
     "types": ["bun"],
     "strict": true,
     "useUnknownInCatchVariables": true,
     "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
