@@ -1,8 +1,7 @@
 import type { Account } from '@/ledger/account/account';
 import type { Money } from '@/ledger/money/money';
 
-// Disposable scope: on `using` exit (including an exception unwinding the
-// stack), it replays the recorded undos in reverse unless it was committed
+// Replays undos in reverse on `using` exit, including a throw, unless committed
 class Transaction implements Disposable {
   readonly #undos: Array<() => void> = [];
   #committed = false;
@@ -36,8 +35,7 @@ export function transfer(from: Account, to: Account, amount: Money): void {
     () => from.credit(amount),
   );
 
-  // No up-front currency check by design: a cross-currency `to.credit` throws
-  // here and the disposer unwinds leg 1, exercising rollback over early-guarding
+  // No up-front currency check, so a cross-currency transfer shows the rollback
   tx.stage(
     () => to.credit(amount),
     () => to.debit(amount),
